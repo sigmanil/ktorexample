@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Specification-Version: 0.0.1-SNAPSHOT
+Implementation-Version: 2021-04-21T15:05:40.5818687
+Main-Class: smn.ktorexample.MainKt
+
