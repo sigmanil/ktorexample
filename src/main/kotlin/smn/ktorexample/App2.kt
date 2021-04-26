@@ -6,19 +6,15 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 
-fun Application.ktorApplication2() {
-    exampleKtorKeyValueApplication(
-        Application2ProductionRegistry
-    )
-}
+internal const val requestPathKeyValue = "/keyvalue"
 
 fun Application.exampleKtorKeyValueApplication(
     serviceRegistry: KeyValueApplicationServiceRegistry,
     installMoreThings: Application.() -> Unit = {}
 ) {
     routing {
-        route("/keyvalue/") {
-            get("{keyParam}") {
+        route("$requestPathKeyValue") {
+            get("/{keyParam}") {
                 val key = call.parameters["keyParam"]!!
                 val result = serviceRegistry.keyValueStorageService.get(key)
 
@@ -29,7 +25,7 @@ fun Application.exampleKtorKeyValueApplication(
                 }
             }
 
-            put("{keyParam}") {
+            put("/{keyParam}") {
                 val key = call.parameters["keyParam"]!!
                 val value = call.receive<String>()
 
@@ -43,19 +39,32 @@ fun Application.exampleKtorKeyValueApplication(
     installMoreThings()
 }
 
+//The actual application for "production"
+fun Application.ktorApplication2() {
+    exampleKtorKeyValueApplication(
+        Application2ProductionRegistry()
+    )
+}
+
+//Service registry for the KeyValue-application. It needs a storage service.
 interface KeyValueApplicationServiceRegistry {
     val keyValueStorageService: KeyValueStorageService
 }
 
-object Application2ProductionRegistry: KeyValueApplicationServiceRegistry {
-    override val keyValueStorageService: KeyValueStorageService by lazy { KeyValueStorageServiceMapImpl() }
+//Production ready registry for the KeyValue-application. Specifies implementation.
+class Application2ProductionRegistry: KeyValueApplicationServiceRegistry {
+    override val keyValueStorageService: KeyValueStorageService by lazy {
+        KeyValueStorageServiceMapImpl()
+    }
 }
 
+//The service required by the KeyValue-application
 interface KeyValueStorageService {
     fun put(key: String, value: String)
     fun get(key: String): String?
 }
 
+//The "production ready" implementation of the KeyValue service.
 class KeyValueStorageServiceMapImpl: KeyValueStorageService {
     private val map = mutableMapOf<String, String>()
     override fun put(key: String, value: String) {

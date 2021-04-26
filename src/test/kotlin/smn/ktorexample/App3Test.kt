@@ -6,16 +6,6 @@ import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 
-fun withExampleKtorApplication3(
-    test: TestApplicationEngine.() -> Unit
-) {
-    withTestApplication({
-        ktorApplication3()
-    }) {
-        test()
-    }
-}
-
 internal class App3Test {
 
     @Test
@@ -23,15 +13,15 @@ internal class App3Test {
         val testCar = "Tesla"
 
         withExampleKtorApplication3 {
-            handleGet("/keyvalue/car") {
+            handleGet("$requestPathKeyValue/car") {
                 assertEquals(HttpStatusCode.NotFound, response.status())
             }
 
-            handlePut("/keyvalue/car", testCar) {
+            handlePut("$requestPathKeyValue/car", testCar) {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleGet("/keyvalue/car") {
+            handleGet("$requestPathKeyValue/car") {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals(testCar, response.content)
             }
@@ -43,19 +33,29 @@ internal class App3Test {
         val testCar = "Toyota"
 
         withExampleKtorApplication3 {
-            handleGet("/keyvalue/car") {
+            handleGet("$requestPathKeyValue/car") {
                 assertEquals(HttpStatusCode.NotFound, response.status())
             }
 
-            handlePut("/keyvalue/car", testCar) {
+            handlePut("$requestPathKeyValue/car", testCar) {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleGet("/keyvalue/car") {
+            handleGet("$requestPathKeyValue/car") {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals(testCar, response.content)
             }
         }
     }
 
+}
+
+fun withExampleKtorApplication3(
+    test: TestApplicationEngine.() -> Unit
+) {
+    withTestApplication({
+        ktorApplication3()
+    }) {
+        test()
+    }
 }

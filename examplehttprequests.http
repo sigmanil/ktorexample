@@ -1,0 +1,13 @@
+GET http://localhost:9000/helloworld
+
+###
+GET http://localhost:9000/keyvalue/cake
+
+###
+PUT http://localhost:9000/keyvalue/cake
+Content-Type: text/plain
+
+carrotcake
+
+###
+GET http://localhost:9000/keyvalue/cake

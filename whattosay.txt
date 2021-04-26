@@ -1,0 +1,44 @@
+
+Ktor er et applikasjonsrammeverk for kotlin som lages av Jetbrains. De sikter på at det skal være multiplattform,
+asynkront, lettvekt og utvidbart. I dag skal vi se på testing av endepunkter.
+
+Dependency injection is based on constructor injection. (See my articles on Kotlin-cake.) If you prefer a framework, use
+ Coin or something.
+
+Kjapp visning av Main.kt og application.conf
+
+Vis App1.kt
+Kjør programmet og vis at vi får svar på helloworld-linja i examplehttprequests.http
+Dette tilsvarer å kjøre ting i browser, postman, boomerang eller hvilket verktøy du nå liker best for å "teste" http.
+
+Men vi vil jo helst ha automatiske tester.
+Se og forklar App1Test.
+Se og forklar App1TestImproved
+
+Nevnt at paths bør trekkes ut. (Refactor helloworld.)
+
+HER kan vi faktisk stoppe! SÅ enkelt er det. Men det er et par ting man ender opp med å måtte tenke på under
+integrasjonstesting. Merk at RESTEN av foredraget _ikke_ er Ktor sin "skyld", men snarere integrasjonstesting generelt.
+Vi viser dog hvordan vi får løst slike ting med Ktor.
+
+Vis App2.kt
+Gjort klar med to typer "dependency injection" - en for programtjenester, moduler/beans om du vil, og en funksjon for
+ktor-stuff.
+RASK forklaring av det nedenfor.
+
+Vis App2Test. Vis at en testene funker hver for seg, men ikke sammen. Why? Fordi vi har en applikasjon - som
+formodentlig kan ta tid å sette opp - så den tas ikke ned mellom hver test. Det må håndteres. I dette tilfellet er det
+ingen særlig kostnad, men hva om vi faktisk hadde en database?
+
+Vis App3. Merk at det er samme "keyvalue"-tjeneste som i app 2, men med et annet tjenesteregister.
+Vis App3Test - feiler av samme grunn som App2test.
+
+Vis App3TestImproved: Vi må ha rollback! Legger inn det...
+....men det feiler likevel.
+
+Why doesn't App3TestImproved work?
+ New threads (and coroutines) are started, and the threadlocal in our transactionmanager won't find the relevant
+ transaction. So even though transactions are technically reentrant, that just isn't applicable in this case.
+ We need to make sure each actual call is done within the overarching transaction.
+
+Vis App3TestImprovedAndWorking.

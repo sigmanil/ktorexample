@@ -13,15 +13,15 @@ internal class App2Test {
         val testCake = "carrotcake"
 
         withExampleKtorApplication2 {
-            handleGet("/keyvalue/cake") {
+            handleGet("$requestPathKeyValue/cake") {
                 assertEquals(HttpStatusCode.NotFound, response.status())
             }
 
-            handlePut("/keyvalue/cake", testCake) {
+            handlePut("$requestPathKeyValue/cake", testCake) {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleGet("/keyvalue/cake") {
+            handleGet("$requestPathKeyValue/cake") {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals(testCake, response.content)
             }
@@ -33,15 +33,15 @@ internal class App2Test {
         val testCake = "brownie"
 
         withExampleKtorApplication2 {
-            handleGet("/keyvalue/cake") {
+            handleGet("$requestPathKeyValue/cake") {
                 assertEquals(HttpStatusCode.NotFound, response.status())
             }
 
-            handlePut("/keyvalue/cake", testCake) {
+            handlePut("$requestPathKeyValue/cake", testCake) {
                 assertEquals(HttpStatusCode.OK, response.status())
             }
 
-            handleGet("/keyvalue/cake") {
+            handleGet("$requestPathKeyValue/cake") {
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertEquals(testCake, response.content)
             }

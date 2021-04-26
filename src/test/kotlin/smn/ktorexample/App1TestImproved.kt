@@ -19,7 +19,10 @@ internal class App1TestImproved {
 }
 
 
-//Helper functions to be reused across all tests - would be in separate file in a real code base.
+
+
+//Helper functions to be reused across all tests
+// - would be in separate file in a real code base.
 
 fun withExampleKtorApplication1(
     test: TestApplicationEngine.() -> Unit
@@ -33,12 +36,12 @@ fun withExampleKtorApplication1(
 
 fun TestApplicationEngine.handleGet(
     requestUri: String,
-    handleApplicationCall: TestApplicationCall.() -> Unit
+    handleResult: TestApplicationCall.() -> Unit
 ) {
     with(handleRequest {
         this.uri = requestUri
         this.method = HttpMethod.Get
     }) {
-        handleApplicationCall()
+        handleResult()
     }
 }
