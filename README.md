@@ -1,2 +1,2 @@
-# ktorexample
-Example repo to demonstrate some basic things about Ktor
+# ktor integration test example
+Example repo to demonstrate integration testing in ktor
